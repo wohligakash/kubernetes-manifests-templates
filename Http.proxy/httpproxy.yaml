@@ -1,0 +1,30 @@
+kind: HTTPProxy
+apiVersion: projectcontour.io/v1
+metadata:
+  name: askus-api
+spec:
+  routes:
+    - services:
+        - name: askus-api
+          port: 80
+      timeoutPolicy:
+        idle: infinity
+        response: infinity
+  virtualhost:
+    fqdn: my-app.abc.com
+    corsPolicy:
+      allowCredentials: true
+      allowOrigin:
+        - "*" # allows any origin
+      allowMethods:
+        - GET
+        - POST
+        - OPTIONS
+      allowHeaders:
+        - "*" # allows any origin
+      exposeHeaders:
+        - Content-Length
+        - Content-Range
+      maxAge: "10m" # preflight requests can be cached for 10 minutes.
+    tls:  # needed if cert manager is used to issue certificates
+      secretName: my-app # to be mentioned in certificate manifest

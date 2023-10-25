@@ -1,0 +1,17 @@
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: my-vpa
+  namespace: my-namespace
+spec:
+  targetRef:
+    apiVersion: "apps/v1"
+    kind: "Deployment"
+    name: "my-deployment"
+  updatePolicy:
+    updateMode: "Auto" # modes available - Auto, Initial, Recreate, Off
+
+# Auto (Default):  With updateMode: "Auto", the VPA controller will automatically adjust the resource requests and limits for pods based on observed usage.
+# Initial: With updateMode: "Initial", the VPA will set the initial resource requests and limits for pods when they are created.
+# Recreate: With updateMode: "Recreate", the VPA will recommend changes to resource requests and limits, but applying these changes requires recreating the pods.
+# Off: With updateMode: "Off", the VPA will not make any changes to resource requests and limits. It will only provide recommendations.

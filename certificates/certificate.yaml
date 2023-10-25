@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: askus-api
+spec:  
+  commonName: my-app.abc.com
+  dnsNames:
+    - my-app.abc.com
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  secretName: my-app # define tls for the same in http proxy

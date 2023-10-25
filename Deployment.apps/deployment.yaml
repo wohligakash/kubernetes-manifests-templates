@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-deployment
+  namespace: my-namespace
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+      - name: my-container
+        image: nginx:latest
+        ports:
+          - containerPort: 3000
+            protocol: TCP
+        envFrom:
+          - configMapRef:
+              name: my-config
+        env:
+          - name: key
+            value: 'value'
+        resources:
+          requests:
+            memory: "768Mi"
+            cpu: "768m"
+          limits:
+            memory: "1024Mi"
+            cpu: "1024m"
+        readinessProbe:
+          tcpSocket:
+            port: 3000
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+          periodSeconds: 10
+          successThreshold: 1
+          failureThreshold: 3
+        imagePullPolicy: Always
